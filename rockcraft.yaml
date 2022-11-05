@@ -1,0 +1,26 @@
+name: busybox
+version: "1.34.1"
+build-base: ubuntu:22.04
+base: bare
+summary: Busybox
+description: Busybox
+license: Apache-2.0
+platforms:
+  amd64:
+
+cmd: ["busybox", "sh"]
+
+parts:
+  busybox:
+    plugin: nil
+    source: https://busybox.net/downloads/busybox-1.34.1.tar.bz2
+    build-packages:
+      - make
+      - gcc
+    stage-packages:
+      - libc6_libs
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/bin/
+      make defconfig
+      make
+      mv busybox $CRAFT_PART_INSTALL/bin/
